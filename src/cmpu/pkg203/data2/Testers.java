@@ -9,13 +9,8 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
-public class CMPU203Data2 {
-
-    /**
-     * @param args the command line arguments
-     */
+public class Testers {
     public static void main(String[] args) {
         // TODO code application logic here
     }
-    
 }
