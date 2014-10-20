@@ -38,30 +38,37 @@ public class Leaf implements Multiset {
 
     
     public Multiset remove(Comparable data) {
+        return this;
     }
 
     
-    public Multiset union(Comparable u) {
+    public Multiset union(Multiset u) {
+        return u;
     }
 
     
-    public Multiset inter(Comparable u) {
+    public Multiset inter(Multiset u) {
+        return this;
     }
 
     
-    public Multiset diff(Comparable u) {
+    public Multiset diff(Multiset u) {
+        return u;
     }
 
     
-    public boolean equal(Comparable u) {
+    public boolean equal(Multiset u) {
+        return false;
     }
 
     
-    public boolean subset(Comparable u) {
+    public boolean subset(Multiset u) {
+        return true;
     }
 
     
     public Iterator iterator() {
+        return this;
     }
     
 }
