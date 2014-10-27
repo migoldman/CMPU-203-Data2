@@ -14,6 +14,7 @@ public interface Multiset<T extends Comparable> extends Iterable<T>{
     boolean isEmpty();
     int multiplicity(T data);
     Multiset add(T data);
+    Multiset add(T data, int n);
     Multiset remove(T data);
     Multiset union(T u);
     Multiset inter(T u);

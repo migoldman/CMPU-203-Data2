@@ -33,7 +33,11 @@ public class Leaf implements Multiset {
 
     
     public Multiset add(Comparable data) {
-        return new Branch(data, 0, new Leaf(), new Leaf());
+        return new Branch(data, 1, new Leaf(), new Leaf());
+    }
+    
+    public Multiset add(Comparable data, int n) {
+        return new Branch(data, n, new Leaf(), new Leaf());
     }
 
     
