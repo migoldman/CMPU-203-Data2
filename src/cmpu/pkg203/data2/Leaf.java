@@ -72,7 +72,7 @@ public class Leaf implements Multiset {
 
     
     public Iterator iterator() {
-        return this;
+        return this.iterator();
     }
     
 }

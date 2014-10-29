@@ -14,8 +14,7 @@ import java.util.Iterator;
 public class Branch implements Multiset {
     Comparable data;
     int counter;
-    Multiset left;
-    Multiset right;
+    Multiset left, right;
 
     Branch(Comparable data, int counter, Multiset left, Multiset right) {
         this.data = data;
