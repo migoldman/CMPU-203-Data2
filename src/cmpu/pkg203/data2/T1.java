@@ -32,11 +32,25 @@ public class T1 implements Multiset {
     }
 
     public Multiset add(Comparable data) {
-        
+        fakeL fakeL;
+        fake3 fake3;
+        if(this.child instanceof Branch) {
+            
+        }
+        else {
+            
+        }
     }
 
     public Multiset add(Comparable data, int n) {
-        
+        fakeL fakeL;
+        fake3 fake3;
+        if(this.child instanceof Branch) {
+            
+        }
+        else {
+            
+        }
     }
 
     public Multiset remove(Comparable data) {
@@ -62,7 +76,7 @@ public class T1 implements Multiset {
     public boolean subset(Multiset u) {
         return child.subset(u);
     }
-
+    
     public Iterator iterator() {
     }
     
