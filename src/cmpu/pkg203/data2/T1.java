@@ -45,13 +45,14 @@ public class T1 implements Multiset {
     public Multiset add(Comparable data, int n) {
         fakeL fakeL;
         fake3 fake3;
-        if(this.child instanceof Branch) {
-            
+        if(this.child instanceof Leaf) {
         }
-        else {
+        else if(this.child instanceof T1) {
             
         }
     }
+    
+    public fake step1(com)
 
     public Multiset remove(Comparable data) {
         return child.remove(data);
