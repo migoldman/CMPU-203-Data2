@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  * @author michaelgoldman
  */
-public class T1 implements Multiset {
+public class T1 implements Fake {
     Multiset child;
 
     public T1(Multiset N) {
@@ -52,7 +52,13 @@ public class T1 implements Multiset {
         }
     }
     
-    public fake step1(com)
+    public Fake step1(Comparable data, int counter) {
+        
+    }
+    
+    public Fake fake2(Comparable data, int counter) {
+        
+    }
 
     public Multiset remove(Comparable data) {
         return child.remove(data);

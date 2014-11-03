@@ -9,8 +9,8 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
-public interface Fake<T extends Comparable> {
-    Fake step1(T data, int n);
-    Fake fake2(T data, int n, Multiset left, Multiset right);
+public interface Fake<D extends Comparable> {
+    Fake step1(D data, int n);
+    Fake fake2(D data, int n, Multiset left, Multiset right);
     
 }

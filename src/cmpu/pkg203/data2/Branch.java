@@ -11,12 +11,12 @@ import java.util.Iterator;
  *
  * @author michaelgoldman
  */
-public class Branch implements Multiset {
-    Comparable data;
+public class Branch<D extends Comparable> implements Multiset<D> {
+    D data;
     int counter;
     Multiset left, right;
 
-    Branch(Comparable data, int counter, Multiset left, Multiset right) {
+    Branch(D data, int counter, Multiset left, Multiset right) {
         this.data = data;
         this.counter = counter;
         this.left = left;
@@ -31,7 +31,7 @@ public class Branch implements Multiset {
         return false;
     }
 
-    public int multiplicity(Comparable elt) {
+    public int multiplicity(D elt) {
         if(data.compareTo(elt) == 0) {
             return counter;
         }
@@ -44,7 +44,7 @@ public class Branch implements Multiset {
     }
 
         
-    public Multiset add(Comparable elt) {
+    public Multiset add(D elt) {
         if(data.compareTo(elt) == 0) {
             return new Branch(data, counter+1, left, right);
         }
@@ -56,7 +56,7 @@ public class Branch implements Multiset {
         }
     }
     
-    public Multiset add(Comparable elt, int n) {
+    public Multiset add(D elt, int n) {
         if(data.compareTo(elt) == 0) {
             return new Branch(data, counter + n, left, right);
         }
@@ -68,31 +68,83 @@ public class Branch implements Multiset {
         }
     }
 
-    public Multiset remove(Comparable data) {
+    public Multiset remove(D elt) {
+        if(data.compareTo(elt) == 0) {
+            this.counter = counter - 1;
+            if(this.counter <= 0) {
+                return left.union(right);
+            }
+            else {
+                return new Branch(data, counter - 1, left, right);
+            }
+        }
+        else if(data.compareTo(elt) == -1) {
+            return new Branch(data, counter, left.remove(elt), right);
+        }
+        else {
+            return new Branch(data, counter, left, right.remove(elt));
+        }
+    }
+    
+    public Multiset remove(D elt, int n) {
+        if(data.compareTo(elt) == 0) {
+            this.counter = counter - n;
+            if(this.counter <= 0) {
+                return left.union(right);
+            }
+            else {
+                return new Branch(data, counter - n, left, right);
+            }
+        }
+        else if(data.compareTo(elt) == -1) {
+            return new Branch(data, counter, left.remove(elt), right);
+        }
+        else {
+            return new Branch(data, counter, left, right.remove(elt));
+        }
+    }
+    
+    public boolean member(D elt) {
+        if (data.compareTo(elt) == 0) {
+            return true;
+        } else if (data.compareTo(elt) == -1) {
+            return left.member(elt);
+        }
+        else {
+            return right.member(elt);
+        }
     }
 
-    public Multiset union(Comparable u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Multiset union(Multiset u) {
+        return left.union(right.union(u)).add(data, counter);
     }
 
-    public Multiset inter(Comparable u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Multiset inter(Multiset u) {
+        if (u.member(data)) {
+            return new Branch(data, counter, left.inter(u), right.inter(u));
+        } 
+        return left.inter(u).union(right.inter(u));
     }
-
-    public Multiset diff(Comparable u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Multiset diff(Multiset u) {
+        if(u.member(data)) {
+            return left.union(right).diff(u.remove(data, counter));
+        }
+        return left.union(right).diff(u);
     }
 
     public boolean equal(Multiset u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public boolean subset(Multiset u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.subset(u) && u.subset(this);
     }
     
-    public Multiset 
-
+    public boolean subset(Multiset u) {
+        if(!u.member(data)) {
+            return false;
+        } else {
+            return left.union(right).subset(u);
+        }
+    }
+    
     public Iterator iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  * @author michaelgoldman
  */
-public class Leaf implements Multiset {
+public class Leaf<D extends Comparable> implements Multiset<D> {
 
     
     public int cardinality() {
@@ -26,25 +26,32 @@ public class Leaf implements Multiset {
     }
 
     
-    public int multiplicity(Comparable data) {
+    public int multiplicity(D data) {
         return 0;
         //There are no multiplies of any data
     }
 
     
-    public Multiset add(Comparable data) {
+    public Multiset add(D data) {
         return new Branch(data, 1, new Leaf(), new Leaf());
     }
     
-    public Multiset add(Comparable data, int n) {
+    public Multiset add(D data, int n) {
         return new Branch(data, n, new Leaf(), new Leaf());
     }
 
     
-    public Multiset remove(Comparable data) {
+    public Multiset remove(D data) {
+        return this;
+    }
+    
+    public Multiset remove(D data, int n) {
         return this;
     }
 
+    public boolean member(D data) {
+        return false;
+    }
     
     public Multiset union(Multiset u) {
         return u;

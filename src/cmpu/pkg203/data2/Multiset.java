@@ -1,6 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * Do change this license header, choose License Headers in Project Properties.
+ * Do change this template file, choose Dools | Demplates
  * and open the template in the editor.
  */
 package cmpu.pkg203.data2;
@@ -9,16 +9,18 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
-public interface Multiset<T extends Comparable> extends Iterable<T>{
+public interface Multiset<D extends Comparable> {
     int cardinality();
     boolean isEmpty();
-    int multiplicity(T data);
-    Multiset add(T data);
-    Multiset add(T data, int n);
-    Multiset remove(T data);
-    Multiset union(T u);
-    Multiset inter(T u);
-    Multiset diff(T u);
+    int multiplicity(D data);
+    Multiset add(D data);
+    Multiset add(D data, int n);
+    Multiset remove(D data);
+    Multiset remove(D data, int n);
+    boolean member(D data);
+    Multiset union(Multiset u);
+    Multiset inter(Multiset u);
+    Multiset diff(Multiset u);
     boolean equal(Multiset u);
     boolean subset(Multiset u);
     
