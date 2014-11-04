@@ -5,7 +5,6 @@
  */
 package cmpu.pkg203.data2;
 
-import java.util.Iterator;
 
 /**
  *
@@ -22,7 +21,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         this.left = left;
         this.right = right;
     }
-
+    
     public int cardinality() {
         return 1 + left.cardinality() + right.cardinality();
     }
@@ -143,11 +142,6 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         } else {
             return left.union(right).subset(u);
         }
-    }
-    
-    public Iterator iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    } 
     
 }

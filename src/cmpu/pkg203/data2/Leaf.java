@@ -5,7 +5,6 @@
  */
 package cmpu.pkg203.data2;
 
-import java.util.Iterator;
 
 /**
  *
@@ -75,11 +74,6 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
     
     public boolean subset(Multiset u) {
         return true;
-    }
-
-    
-    public Iterator iterator() {
-        return this.iterator();
     }
     
 }

@@ -9,10 +9,10 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
-
-//I will fix this later. This is for self balancing (will probably swap to Red Black)
-public interface Fake<D extends Comparable> {
-    Fake step1(D data, int n);
-    Fake fake2(D data, int n, Multiset left, Multiset right);
+public interface Sequence<D extends Comparable> {
+    
+    public D here();
+    public boolean hasNext();
+    public Sequence<D> next();
     
 }

@@ -62,13 +62,19 @@ public class Testers<D extends Comparable> {
         Multiset MS2 = MS1.add(4);
         Multiset MS3 = MS2.add(5);
         
-        Multiset S1 = MT.add('t');
+        Multiset C1 = MT.add('t');
+        Multiset S1 = MT.add("foo");
+        Multiset S2 = S1.add("bar");
         
         System.out.println("Cardinality tests");
-        System.out.println( 0 + " is " + MT.cardinality());
-        System.out.println(1 + "is " + MS1.cardinality());
-        System.out.println( 2 + " is "+ MS2.cardinality());
-        System.out.println( 2 + " is "+ MS3.cardinality());
-        System.out.println(1 + " is " + S1.cardinality());
+        System.out.println(0 + " is " + MT.cardinality());
+        System.out.println(1 + " is " + MS1.cardinality());
+        System.out.println(2 + " is " + MS2.cardinality());
+        System.out.println(2 + " is " + MS3.cardinality());
+        System.out.println(1 + " is " + C1.cardinality());
+        System.out.println(1 + " is " + C1.multiplicity('t'));
+        System.out.println(2 + " is " + S2.cardinality());
+        System.out.println(1 + " is " + S2.multiplicity("foo"));
+        System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
     }
 }
