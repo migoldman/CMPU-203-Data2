@@ -10,6 +10,8 @@ package cmpu.pkg203.data2;
  * @author michaelgoldman
  */
 public interface Multiset<D extends Comparable> {
+    Multiset blacken();
+    boolean isBlackHuh();
     int cardinality();
     boolean isEmpty();
     int multiplicity(D data);
@@ -23,5 +25,6 @@ public interface Multiset<D extends Comparable> {
     Multiset diff(Multiset u);
     boolean equal(Multiset u);
     boolean subset(Multiset u);
+    Multiset format();
     
 }

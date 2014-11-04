@@ -12,6 +12,7 @@ package cmpu.pkg203.data2;
  */
 public class Leaf<D extends Comparable> implements Multiset<D> {
 
+    boolean isBlack;
     
     public int cardinality() {
         return 0;
@@ -23,7 +24,14 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
         return true;
         //Nothing is in a Leaf
     }
-
+    
+    public Multiset blacken() {
+        return this;
+    }
+    
+    public boolean isBlackHuh() {
+        return isBlack;
+    }
     
     public int multiplicity(D data) {
         return 0;
@@ -74,6 +82,10 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
     
     public boolean subset(Multiset u) {
         return true;
+    }
+    
+    public Multiset format() {
+        return this;
     }
     
 }

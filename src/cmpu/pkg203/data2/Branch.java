@@ -14,12 +14,22 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     D data;
     int counter;
     Multiset left, right;
-
+    boolean isBlack;
+    
     Branch(D data, int counter, Multiset left, Multiset right) {
         this.data = data;
         this.counter = counter;
         this.left = left;
         this.right = right;
+        isBlack = false;
+    }
+
+    Branch(D data, int counter, Multiset left, Multiset right, boolean isBlack) {
+        this.data = data;
+        this.counter = counter;
+        this.left = left;
+        this.right = right;
+        this.isBlack = isBlack;
     }
     
     public int cardinality() {
@@ -28,6 +38,14 @@ public class Branch<D extends Comparable> implements Multiset<D> {
 
     public boolean isEmpty() {
         return false;
+    }
+    
+    public Multiset blacken() {
+        return new Branch(this.data, this.counter, this.left, this.right, true);
+    }
+    
+    public boolean isBlackHuh() {
+        return this.isBlack;
     }
 
     public int multiplicity(D elt) {
@@ -143,5 +161,10 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             return left.union(right).subset(u);
         }
     } 
+    
+    public Multiset format() {
+        //How do you get it so you can see the child of the child?
+        return null;
+    }
     
 }
