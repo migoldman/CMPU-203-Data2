@@ -9,10 +9,11 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
+import java.util.Arrays;
 import java.util.Random;
 
 public class Testers<D extends Comparable> {
-    static Random rand;
+    static Random rand = new Random();
     
     //Creates an empty multiset
     public static Multiset empty() {
@@ -22,6 +23,16 @@ public class Testers<D extends Comparable> {
     //Creates a random int from min to max
     public static int randomInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
+    }
+    
+    public static String randomString() {
+        int random = randomInt(0, 10);
+        char[] stringIn = new char[random];
+        String characters = "ABCDEFGHIJK";
+        for(int i = 0; i < random; i++) {
+            stringIn[i] = characters.charAt(rand.nextInt(characters.length()));
+        }
+        return Arrays.toString(stringIn);
     }
     
     //Creates a random Multiset (RMS) with a max length of maxlen, data ranging
@@ -36,24 +47,21 @@ public class Testers<D extends Comparable> {
         }
     }
     
-//    public static void RMStester() {
-//        for(int i = 0; i < 50; i++) {
-//            
-//        }
-//    }
-    
     public static void cardAddP() {
         for(int i = 0; i < 50; i++) {
             Multiset holder = RMS(0, 10, 20);
             int randInt = randomInt(0,10);
             int holderCard = holder.cardinality();
-            if(holder.add(randInt).cardinality() == holderCard+1) {
-                if(!holder.member(randInt)) {
+            if(holder.member(randInt) && holder.add(randInt).cardinality() == holderCard+1) {
                     System.out.println("Error 0");
+                }
+            
+            else if(!holder.member(randInt) && holder.add(randInt).cardinality() == holderCard) {
+                    System.out.println("Error 1");
                 }
             }
         }
-    }
+    
     
     public static void main(String[] args) {
         //Static variables for initial testing
@@ -76,5 +84,11 @@ public class Testers<D extends Comparable> {
         System.out.println(2 + " is " + S2.cardinality());
         System.out.println(1 + " is " + S2.multiplicity("foo"));
         System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
+        System.out.println();
+        
+        System.out.println(randomInt(0,10));
+        //Actual tests
+        System.out.println(RMS(0, 10, 20).toString());
+        System.out.println(randomString());
     }
 }

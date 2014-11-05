@@ -161,7 +161,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             return left.union(right).subset(u);
         }
     } 
-    
+ 
     public Multiset format() {
         //How do you get it so you can see the child of the child?
         return null;
