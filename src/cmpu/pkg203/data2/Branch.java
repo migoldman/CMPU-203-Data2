@@ -33,7 +33,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
     
     public int cardinality() {
-        return 1 + left.cardinality() + right.cardinality();
+        return this.counter + left.cardinality() + right.cardinality();
     }
 
     public boolean isEmpty() {
@@ -161,6 +161,23 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             return left.union(right).subset(u);
         }
     } 
+    
+    public Sequence<D> sequence() {
+        return new BranchSeq(data, counter, (new AppendSeq(left.sequence(),right.sequence())));
+    }
+    
+    public int sumIt() {
+        return sumIts(this.sequence());
+    }
+    
+    public int sumIts(Sequence<D> temp) {
+        int sum = 0;
+        while(temp.hasNext()) {
+            sum = sum+1;
+            temp = temp.next();
+        }
+        return sum;
+    }
  
     public Multiset format() {
         //How do you get it so you can see the child of the child?

@@ -25,6 +25,8 @@ public interface Multiset<D extends Comparable> {
     Multiset diff(Multiset u);
     boolean equal(Multiset u);
     boolean subset(Multiset u);
+    public Sequence<D> sequence();
+    public int sumIt();
     Multiset format();
     
 }

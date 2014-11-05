@@ -14,6 +14,10 @@ import java.util.Random;
 
 public class Testers<D extends Comparable> {
     static Random rand = new Random();
+    static int randomInt = randomInt(0, 20);
+    static Multiset branch = RMS(0, 20, 20);
+    static Multiset MT = empty();
+
     
     //Creates an empty multiset
     public static Multiset empty() {
@@ -47,17 +51,27 @@ public class Testers<D extends Comparable> {
         }
     }
     
-    public static void cardAddP() {
-        for(int i = 0; i < 50; i++) {
-            Multiset holder = RMS(0, 10, 20);
-            int randInt = randomInt(0,10);
-            int holderCard = holder.cardinality();
-            if(holder.member(randInt) && holder.add(randInt).cardinality() == holderCard+1) {
-                    System.out.println("Error 0");
+    public static void cardSeqP() {
+        for (int i = 0; i < 50; i++) {
+            if(branch.cardinality() != branch.sumIt()) {
+                System.out.println("Error 0");
+            }
+        }
+    }
+    
+    //Cardinality Add Principle
+        //holder.add(randInt).cardinality <==> holder.cardinality()++
+            //Since we allow duplicates, it should always go up    
+        public static void cardAddP() {
+            for(int i = 0; i < 50; i++) {
+                Multiset holder = RMS(0, 20, 20);
+                int randInt = randomInt(0, 20);
+                int temp = holder.cardinality();
+                if(holder.add(randInt).cardinality() == temp+1)
+                {
                 }
-            
-            else if(!holder.member(randInt) && holder.add(randInt).cardinality() == holderCard) {
-                    System.out.println("Error 1");
+                else {
+                    System.out.println("Something went wrong in cardAddP");
                 }
             }
         }
@@ -65,7 +79,6 @@ public class Testers<D extends Comparable> {
     
     public static void main(String[] args) {
         //Static variables for initial testing
-        Multiset MT = empty();
         Multiset MS1 = MT.add(5);
         Multiset MS2 = MS1.add(4);
         Multiset MS3 = MS2.add(5);
@@ -73,6 +86,7 @@ public class Testers<D extends Comparable> {
         Multiset C1 = MT.add('t');
         Multiset S1 = MT.add("foo");
         Multiset S2 = S1.add("bar");
+        
         
         System.out.println("Cardinality tests");
         System.out.println(0 + " is " + MT.cardinality());
@@ -86,9 +100,18 @@ public class Testers<D extends Comparable> {
         System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
         System.out.println();
         
-        System.out.println(randomInt(0,10));
         //Actual tests
-        System.out.println(RMS(0, 10, 20).toString());
+        System.out.println("checking to see multiplicity of " +randomInt + ""
+                + "in " + branch.sequence().toString() + " = " + branch.multiplicity(randomInt));        
         System.out.println(randomString());
+        System.out.println();
+        System.out.println("BST card");
+        System.out.println(branch.cardinality());
+        System.out.println("Seq toString");
+        System.out.println(branch.sequence().toString());
+        System.out.println("Seq size");
+        System.out.println(branch.sumIt());
+        cardSeqP();
+        cardAddP();
     }
 }

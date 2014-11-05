@@ -23,6 +23,7 @@ public class LeafSeq<D extends Comparable> implements Sequence {
         throw new RuntimeException("There is no \"next()\" in LeafSeq");
     }
     
+    
     public String toString() {
         return "";
     }

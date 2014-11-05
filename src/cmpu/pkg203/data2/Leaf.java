@@ -84,8 +84,16 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
         return true;
     }
     
+    public Sequence<D> sequence() {
+        return new LeafSeq();
+    }
+    
     public Multiset format() {
         return this;
+    }
+    
+    public int sumIt() {
+        return 0;
     }
     
 }

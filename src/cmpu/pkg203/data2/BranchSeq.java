@@ -35,8 +35,8 @@ public class BranchSeq<D extends Comparable> implements Sequence {
             return next;
         }
     }
-    
+
     public String toString() {
-        return this.here + " ";
+        return "(" + this.here + "x" + this.count + ") " + this.next;
     }
 }
