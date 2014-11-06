@@ -28,5 +28,7 @@ public interface Multiset<D extends Comparable> {
     public Sequence<D> sequence();
     public int sumIt();
     Multiset format();
+    Multiset insert(D data, int n);
+    Multiset insertIn(D data, int n);
     
 }

@@ -179,6 +179,23 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         return this.isBlack;
     }
     
+    public Multiset insert(D elt, int n) {
+        return this.insertIn(elt, n).blacken();
+    }
+    
+    public Multiset insertIn(D elt, int n) {
+        if(elt.compareTo(this.data) == 0) {
+            return new Branch(this.data, this.counter + n, this.left, this.right, this.isBlack);
+        }
+        else if(elt.compareTo(this.data) < 0) {
+            return new Branch(this.data, this.counter, left.insert(elt, n), this.right, this.isBlack).format();
+        }
+        else {
+            return new Branch(this.data, this.counter, left, this.right.insert(elt, n), this.isBlack).format();
+        }
+        
+    }
+    
     public Multiset format() {
         Branch L;
         Branch LL;

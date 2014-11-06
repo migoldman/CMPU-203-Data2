@@ -29,14 +29,19 @@ public class Testers<D extends Comparable> {
         return rand.nextInt((max - min) + 1) + min;
     }
     
-    //Prints out a random letter
-    public static char randomString() {
+    public static char[] randomChar(int maxlen) {
+        int random = randomInt(0, maxlen);
+        char[] stringIn = new char[random];
         String characters = "ABCDEFGHIJK";
-        return characters.charAt(rand.nextInt(characters.length()));
+        for(int i = 0; i < random; i++) {
+            stringIn[i] = characters.charAt(rand.nextInt(characters.length()));
+        }
+        return stringIn;
     }
     
     //Creates a random Multiset (RMSi) with a max length of maxlen, data ranging
         //from min to max
+        //If there are duplicates, it will add it to the counter of the data
     public static Multiset RMSi(int min, int max, int maxlen) {
         if(maxlen > 0) {
             return RMSi(min, max, (maxlen-1)).add(randomInt(min,max));
@@ -46,16 +51,15 @@ public class Testers<D extends Comparable> {
         }
     }
     
-    //Creates a random Multiset (RMSs) with a max length of maxlen, ranging from 
-        //A - K
-    public static Multiset RMSs(int min, int max, int maxlen) {
-        int random = randomInt(0, 20);
-        Multiset temp = MT;
-        for(int i = 0; i < random; i++) {
-            temp.add(randomString());
-        }
-        return temp;
-    }
+            //Having trouble printing out this
+//    public static Multiset RMSs(int maxlen) {
+//        Multiset randc = MT;
+//        char[] temp = randomChar(maxlen);
+//        for(int i = 0; i < maxlen; i ++) {
+//            randc.add(temp[i]);
+//        }
+//        return randc;
+//    }
     
     public static void cardSeqP() {
         for (int i = 0; i < 50; i++) {
@@ -106,9 +110,9 @@ public class Testers<D extends Comparable> {
 //        System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
 //        System.out.println();
         
-        System.out.println(randomString());
+        System.out.println(Arrays.toString(randomChar(20)));
         System.out.println(RMSi(0,20,20).sequence().toString());
-        System.out.println(RMSs(0,20,20).sequence().toString());
+        //System.out.println(RMSs(20).sequence().toString());
         
         //Actual tests
 //        System.out.println("checking to see multiplicity of " +randomInt + ""
@@ -125,3 +129,4 @@ public class Testers<D extends Comparable> {
         cardAddP();
     }
 }
+

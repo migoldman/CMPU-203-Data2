@@ -88,6 +88,14 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
         return new LeafSeq();
     }
     
+    public Multiset insert(D elt, int n) {
+        return this.insertIn(elt, n).blacken();
+    }
+    
+    public Multiset insertIn(D elt, int n) {
+        return new Branch(elt, n, new Leaf(), new Leaf());
+    }
+    
     public Multiset format() {
         return this;
     }
