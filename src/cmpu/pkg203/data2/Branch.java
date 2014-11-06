@@ -39,14 +39,6 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     public boolean isEmpty() {
         return false;
     }
-    
-    public Multiset blacken() {
-        return new Branch(this.data, this.counter, this.left, this.right, true);
-    }
-    
-    public boolean isBlackHuh() {
-        return this.isBlack;
-    }
 
     public int multiplicity(D elt) {
         if(data.compareTo(elt) == 0) {
@@ -178,10 +170,125 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         }
         return sum;
     }
- 
+
+    public Multiset blacken() {
+        return new Branch(this.data, this.counter, this.left, this.right, true);
+    }
+    
+    public boolean isBlackHuh() {
+        return this.isBlack;
+    }
+    
     public Multiset format() {
-        //How do you get it so you can see the child of the child?
-        return null;
+        Branch L;
+        Branch LL;
+        Branch LR;
+        Branch R;
+        Branch RL;
+        Branch RR;
+        
+        //CASE 1
+        if((this.isBlackHuh()
+                && (this.left instanceof Branch)
+                && (((Branch) this.left).left instanceof Branch)
+                && !((Branch) this.left).isBlackHuh()
+                && !((Branch) this.left).left.isBlackHuh())) {
+            
+            //////////////////
+
+            L = ((Branch) this.left);
+            LL = ((Branch) L.left);
+            
+            //////////////////
+
+            return new Branch(
+                    L.data,
+                    L.counter,
+                    new Branch(LL.data, LL.counter, LL.left, LL.right, true),
+                    new Branch(this.data, this.counter, LL.right, this.right, true),
+                    false);
+        }   
+        
+        
+        //CASE 2
+        else if((this.isBlackHuh() && (this.left instanceof Branch)
+                && (((Branch) this.left).left instanceof Branch)
+                && !((Branch) this.left).isBlackHuh()
+                && !((Branch) this.left).left.isBlackHuh())) {
+            
+            //////////////////
+
+            L = ((Branch) this.left);
+            LL = ((Branch) L.left);
+            LR = ((Branch) L.right);
+            
+            //////////////////
+
+            return new Branch(
+                //Data
+                LR.data, 
+                //Counter
+                LR.counter, 
+                //Left
+                new Branch(L.data, L.counter, LL, LR, true),
+                //Right
+                new Branch(this.data, this.counter, LR.right, this.right, true),
+                //isBlack
+                false);
+        }
+        
+        
+        //CASE 3
+        else if ((this.isBlackHuh()
+                && (this.right instanceof Branch)
+                && (((Branch) this.right).left instanceof Branch)
+                && !((Branch) this.right).isBlackHuh()
+                && !((Branch) this.right).left.isBlackHuh())) {
+            
+            //////////////////
+
+            R = ((Branch) this.right);
+            RL = ((Branch) R.left);
+            
+            //////////////////
+
+            return new Branch(
+                    //Data
+                    RL.data,
+                    //Counter
+                    RL.counter,
+                    //Left
+                    new Branch(this.data, this.counter, RL.left, this.right, true),
+                    //Right
+                    new Branch(R.data, R.counter, RL.right, R.right, true),
+                    false);
+        }
+        
+        //CASE 4
+        else if((this.isBlackHuh()
+                && (this.right instanceof Branch)
+                && (((Branch) this.right).right instanceof Branch)
+                && !((Branch) this.right).isBlackHuh()
+                && !((Branch) this.right).right.isBlackHuh())) {
+            
+            //////////////////
+            
+            R = ((Branch) this.right);
+            RR = ((Branch) R.right);
+            RL = ((Branch) R.left);
+            
+            //////////////////
+            
+            return new Branch(
+                    R.data,
+                    R.counter,
+                    new Branch(this.data, this.counter, this.left, RL, true),
+                    new Branch(RR.data, RR.counter, RR.left, RR.right,true),
+            false);
+        }
+        else {
+            return this;       
+        }
     }
     
 }

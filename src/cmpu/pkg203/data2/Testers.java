@@ -15,7 +15,7 @@ import java.util.Random;
 public class Testers<D extends Comparable> {
     static Random rand = new Random();
     static int randomInt = randomInt(0, 20);
-    static Multiset branch = RMS(0, 20, 20);
+    static Multiset branch = RMSi(0, 20, 20);
     static Multiset MT = empty();
 
     
@@ -29,26 +29,32 @@ public class Testers<D extends Comparable> {
         return rand.nextInt((max - min) + 1) + min;
     }
     
-    public static String randomString() {
-        int random = randomInt(0, 10);
-        char[] stringIn = new char[random];
+    //Prints out a random letter
+    public static char randomString() {
         String characters = "ABCDEFGHIJK";
-        for(int i = 0; i < random; i++) {
-            stringIn[i] = characters.charAt(rand.nextInt(characters.length()));
-        }
-        return Arrays.toString(stringIn);
+        return characters.charAt(rand.nextInt(characters.length()));
     }
     
-    //Creates a random Multiset (RMS) with a max length of maxlen, data ranging
+    //Creates a random Multiset (RMSi) with a max length of maxlen, data ranging
         //from min to max
-        //If there are duplicates, it will add it to the counter of the data
-    public static Multiset RMS(int min, int max, int maxlen) {
+    public static Multiset RMSi(int min, int max, int maxlen) {
         if(maxlen > 0) {
-            return RMS(min, max, (maxlen-1)).add(randomInt(min,max));
+            return RMSi(min, max, (maxlen-1)).add(randomInt(min,max));
         }
         else {
             return new Leaf();
         }
+    }
+    
+    //Creates a random Multiset (RMSs) with a max length of maxlen, ranging from 
+        //A - K
+    public static Multiset RMSs(int min, int max, int maxlen) {
+        int random = randomInt(0, 20);
+        Multiset temp = MT;
+        for(int i = 0; i < random; i++) {
+            temp.add(randomString());
+        }
+        return temp;
     }
     
     public static void cardSeqP() {
@@ -64,7 +70,7 @@ public class Testers<D extends Comparable> {
             //Since we allow duplicates, it should always go up    
         public static void cardAddP() {
             for(int i = 0; i < 50; i++) {
-                Multiset holder = RMS(0, 20, 20);
+                Multiset holder = RMSi(0, 20, 20);
                 int randInt = randomInt(0, 20);
                 int temp = holder.cardinality();
                 if(holder.add(randInt).cardinality() == temp+1)
@@ -79,38 +85,42 @@ public class Testers<D extends Comparable> {
     
     public static void main(String[] args) {
         //Static variables for initial testing
-        Multiset MS1 = MT.add(5);
-        Multiset MS2 = MS1.add(4);
-        Multiset MS3 = MS2.add(5);
+//        Multiset MS1 = MT.add(5);
+//        Multiset MS2 = MS1.add(4);
+//        Multiset MS3 = MS2.add(5);
+//        
+//        Multiset C1 = MT.add('t');
+//        Multiset S1 = MT.add("foo");
+//        Multiset S2 = S1.add("bar");
+//        
+//        
+//        System.out.println("Cardinality tests");
+//        System.out.println(0 + " is " + MT.cardinality());
+//        System.out.println(1 + " is " + MS1.cardinality());
+//        System.out.println(2 + " is " + MS2.cardinality());
+//        System.out.println(2 + " is " + MS3.cardinality());
+//        System.out.println(1 + " is " + C1.cardinality());
+//        System.out.println(1 + " is " + C1.multiplicity('t'));
+//        System.out.println(2 + " is " + S2.cardinality());
+//        System.out.println(1 + " is " + S2.multiplicity("foo"));
+//        System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
+//        System.out.println();
         
-        Multiset C1 = MT.add('t');
-        Multiset S1 = MT.add("foo");
-        Multiset S2 = S1.add("bar");
-        
-        
-        System.out.println("Cardinality tests");
-        System.out.println(0 + " is " + MT.cardinality());
-        System.out.println(1 + " is " + MS1.cardinality());
-        System.out.println(2 + " is " + MS2.cardinality());
-        System.out.println(2 + " is " + MS3.cardinality());
-        System.out.println(1 + " is " + C1.cardinality());
-        System.out.println(1 + " is " + C1.multiplicity('t'));
-        System.out.println(2 + " is " + S2.cardinality());
-        System.out.println(1 + " is " + S2.multiplicity("foo"));
-        System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
-        System.out.println();
+        System.out.println(randomString());
+        System.out.println(RMSi(0,20,20).sequence().toString());
+        System.out.println(RMSs(0,20,20).sequence().toString());
         
         //Actual tests
-        System.out.println("checking to see multiplicity of " +randomInt + ""
-                + "in " + branch.sequence().toString() + " = " + branch.multiplicity(randomInt));        
-        System.out.println(randomString());
-        System.out.println();
-        System.out.println("BST card");
-        System.out.println(branch.cardinality());
-        System.out.println("Seq toString");
-        System.out.println(branch.sequence().toString());
-        System.out.println("Seq size");
-        System.out.println(branch.sumIt());
+//        System.out.println("checking to see multiplicity of " +randomInt + ""
+//                + "in " + branch.sequence().toString() + " = " + branch.multiplicity(randomInt));        
+//        System.out.println(randomString());
+//        System.out.println();
+//        System.out.println("BST card");
+//        System.out.println(branch.cardinality());
+//        System.out.println("Seq toString");
+//        System.out.println(branch.sequence().toString());
+//        System.out.println("Seq size");
+//        System.out.println(branch.sumIt());
         cardSeqP();
         cardAddP();
     }
