@@ -13,11 +13,27 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Testers<D extends Comparable> {
-    static Random rand = new Random();
-    static int randomInt = randomInt(0, 20);
-    static Multiset branch = RMSi(0, 20, 20);
+    Randomness<D> rand;
+    static Random randNum = new Random();
     static Multiset MT = empty();
 
+    static int cardAddF1 = 0, 
+            cardAddF2 = 0,
+            cardRemoveF1 = 0,
+            cardRemoveF2 = 0,
+            memberAddF = 0,
+            memberDiffF = 0,
+            memberUnionF1 =0,
+            memberUnionF2 =0,
+            memberInterF1 = 0,
+            memberInterF2 = 0;
+    
+    //P is for PROPERTY
+    //B is for FAILS
+    
+    Testers(Randomness<D> rand) {
+        this.rand = rand;
+    }
     
     //Creates an empty multiset
     public static Multiset empty() {
@@ -25,93 +41,152 @@ public class Testers<D extends Comparable> {
     }
     
     //Creates a random int from min to max
-    public static int randomInt(int min, int max) {
-        return rand.nextInt((max - min) + 1) + min;
+    public static int randomInt() {
+        return randNum.nextInt((50 - 0) + 1) + 0;
     }
     
-    public static char[] randomChar(int maxlen) {
-        int random = randomInt(0, maxlen);
-        char[] stringIn = new char[random];
-        String characters = "ABCDEFGHIJK";
-        for(int i = 0; i < random; i++) {
-            stringIn[i] = characters.charAt(rand.nextInt(characters.length()));
-        }
-        return stringIn;
-    }
-    
-    //Creates a random Multiset (RMSi) with a max length of maxlen, data ranging
-        //from min to max
-        //If there are duplicates, it will add it to the counter of the data
-    public static Multiset RMSi(int min, int max, int maxlen) {
-        if(maxlen > 0) {
-            return RMSi(min, max, (maxlen-1)).add(randomInt(min,max));
-        }
-        else {
-            return new Leaf();
+    public Multiset<D> RMS(int n) {
+        if(n <= 0) {
+            return empty();
+        } else {
+            return RMS(-1).add(rand.randomInput(),randomInt());
         }
     }
     
-            //Having trouble printing out this
-//    public static Multiset RMSs(int maxlen) {
-//        Multiset randc = MT;
-//        char[] temp = randomChar(maxlen);
-//        for(int i = 0; i < maxlen; i ++) {
-//            randc.add(temp[i]);
-//        }
-//        return randc;
-//    }
-    
-    public static void cardSeqP() {
-        for (int i = 0; i < 50; i++) {
-            if(branch.cardinality() != branch.sumIt()) {
-                System.out.println("Error 0");
+    public void cardAddP() {
+        for(int i = 0; i < 1000; i++) {
+            int length = randomInt();
+            Multiset bag = RMS(length);
+            int bagCard = bag.cardinality();
+            if(bag.add(rand.randomInput()).cardinality() != bagCard +1) {
+                cardAddF1++;
+                
+            }
+            else if(bag.add(rand.randomInput()).cardinality() == bagCard) {
+                cardAddF2++;
+            }
+        }
+    }
+        
+    public void cardRemoveP() {
+        for(int i = 0; i < 1000; i++) {
+            D elt = rand.randomInput();
+            int length = randomInt();
+            Multiset bag = RMS(length);
+            int bagCard = bag.cardinality();
+            int newCard = bag.remove(elt).cardinality();
+            if(bag.multiplicity(elt) >= 1 && newCard != bagCard-1) {
+                cardRemoveF1++;
+            }
+            else if(bag.multiplicity(elt) == 0 && bagCard != newCard) {
+                cardRemoveF2++;
             }
         }
     }
     
-    //Cardinality Add Principle
-        //holder.add(randInt).cardinality <==> holder.cardinality()++
-            //Since we allow duplicates, it should always go up    
-        public static void cardAddP() {
-            for(int i = 0; i < 50; i++) {
-                Multiset holder = RMSi(0, 20, 20);
-                int randInt = randomInt(0, 20);
-                int temp = holder.cardinality();
-                if(holder.add(randInt).cardinality() == temp+1)
-                {
-                }
-                else {
-                    System.out.println("Something went wrong in cardAddP");
+    public void memberAddP() {
+        for(int i = 0; i < 1000; i++) {
+            D elt = rand.randomInput();
+            int length = randomInt();
+            Multiset bag = RMS(length);
+            if(!bag.add(elt).member(elt)) {
+                memberAddF++;
+            }
+        }
+    }
+    
+    public void memberDiffP() {
+        for(int i = 0; i < 1000; i++) {
+            D elt = rand.randomInput();
+            int length = randomInt();
+            Multiset bagA = RMS(length);
+            Multiset bagB = RMS(length);
+            if(bagA.diff(bagB).member(elt) && !bagB.member(elt)) {
+                memberDiffF++;
+            }
+        }
+    }
+    
+    public void memberUnionP() {
+        for(int i = 0; i < 1000; i++) {
+            D elt = rand.randomInput();
+            int length = randomInt();
+            Multiset bagA = RMS(length);
+            Multiset bagB = RMS(length);
+            Multiset bagU = bagA.union(bagB);
+            if(bagU.member(elt) && !(bagA.member(elt) || bagB.member(elt))) {
+                memberUnionF1++;
+            }
+            else if(bagU.multiplicity(elt) != (bagA.multiplicity(elt)+bagB.multiplicity(elt))) {
+                memberUnionF2++;
+            }
+        }
+    }
+    
+    public void memberInterP() {
+        for(int i = 0; i < 1000; i++) {
+            D elt = rand.randomInput();
+            int length = randomInt();
+            Multiset bagA = RMS(length);
+            Multiset bagB = RMS(length);
+            Multiset bagI = bagA.inter(bagB);
+            if(bagI.member(elt) && (!bagA.member(elt) || !bagB.member(elt))) {
+                memberInterF1++;
+            }
+            else if(bagI.multiplicity(elt) != bagA.multiplicity(elt)) {
+                if(bagI.multiplicity(elt) != bagB.multiplicity(elt)) {
+                    memberInterF2++;
                 }
             }
         }
-    
+    }
     
     public static void main(String[] args) {
+        Testers randomInt = new Testers(new RandomInt());
+        Testers randomString = new Testers(new RandomString());
+        
+        randomInt.cardAddP();
+        randomString.cardAddP();
+        System.out.println("cardAddF1 triggered " + cardAddF1 + " times");
+        System.out.println("cardAddF2 triggered " + cardAddF2 + " times");
+        
+        randomInt.cardRemoveP();
+        randomString.cardRemoveP();
+        System.out.println("cardRemoveF1 triggered " + cardRemoveF1 + " times");
+        System.out.println("cardRemoveF2 triggered " + cardRemoveF2 + " times");
+        
+        randomInt.memberDiffP();
+        randomString.memberDiffP();
+        System.out.println("memberAddF triggered " + memberAddF + " times");
+        System.out.println("memberDiffF triggered " + memberDiffF + " times");
+        
+        randomInt.memberUnionP();
+        randomString.memberUnionP();;
+        System.out.println("memberUnionF1 triggered " + memberUnionF1 + " times");
+        System.out.println("memberUnionF2 triggered " + memberUnionF2 + " times");
+
+        randomInt.memberInterP();
+        randomString.memberInterP();
+        System.out.println("memberInterF1 triggered " + memberInterF1 + " times");
+        System.out.println("memberInterF2 triggered " + memberInterF2 + " times");
+
         //Static variables for initial testing
 //        Multiset MS1 = MT.add(5);
 //        Multiset MS2 = MS1.add(4);
 //        Multiset MS3 = MS2.add(5);
 //        
 //        Multiset C1 = MT.add('t');
-//        Multiset S1 = MT.add("foo");
+//        Multiset S1 = MT.add("foo").add("foo");
 //        Multiset S2 = S1.add("bar");
+//        Multiset S3 = S2.remove("foo");
 //        
 //        
-//        System.out.println("Cardinality tests");
-//        System.out.println(0 + " is " + MT.cardinality());
-//        System.out.println(1 + " is " + MS1.cardinality());
-//        System.out.println(2 + " is " + MS2.cardinality());
-//        System.out.println(2 + " is " + MS3.cardinality());
-//        System.out.println(1 + " is " + C1.cardinality());
+//       
 //        System.out.println(1 + " is " + C1.multiplicity('t'));
-//        System.out.println(2 + " is " + S2.cardinality());
-//        System.out.println(1 + " is " + S2.multiplicity("foo"));
-//        System.out.println(0 + " is " + S2.multiplicity("this should be 0"));
+//        System.out.println(2 + " is " + S2.multiplicity("foo"));
+//        System.out.println(2 + " is " + S2.multiplicity("foo"));
+//        System.out.println(1 + " is " + S3.multiplicity("foo"));
 //        System.out.println();
-        
-        System.out.println(Arrays.toString(randomChar(20)));
-        System.out.println(RMSi(0,20,20).sequence().toString());
         //System.out.println(RMSs(20).sequence().toString());
         
         //Actual tests
@@ -125,8 +200,7 @@ public class Testers<D extends Comparable> {
 //        System.out.println(branch.sequence().toString());
 //        System.out.println("Seq size");
 //        System.out.println(branch.sumIt());
-        cardSeqP();
-        cardAddP();
+
     }
 }
 

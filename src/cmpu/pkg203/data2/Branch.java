@@ -16,12 +16,20 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     Multiset left, right;
     boolean isBlack;
     
+    Branch(D data, int counter) {
+        this.data = data;
+        this.counter = counter;
+        this.left = new Leaf();
+        this.right = new Leaf();
+        this.isBlack = false;
+    }
+    
     Branch(D data, int counter, Multiset left, Multiset right) {
         this.data = data;
         this.counter = counter;
         this.left = left;
         this.right = right;
-        isBlack = false;
+        this.isBlack = false;
     }
 
     Branch(D data, int counter, Multiset left, Multiset right, boolean isBlack) {
@@ -78,38 +86,17 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
 
     public Multiset remove(D elt) {
-        if(data.compareTo(elt) == 0) {
-            this.counter = counter - 1;
-            if(this.counter <= 0) {
-                return left.union(right);
-            }
-            else {
-                return new Branch(data, counter - 1, left, right);
-            }
-        }
-        else if(data.compareTo(elt) == -1) {
-            return new Branch(data, counter, left.remove(elt), right);
-        }
-        else {
-            return new Branch(data, counter, left, right.remove(elt));
-        }
+        return this.remove(elt, 1);
     }
     
     public Multiset remove(D elt, int n) {
-        if(data.compareTo(elt) == 0) {
-            this.counter = counter - n;
-            if(this.counter <= 0) {
-                return left.union(right);
-            }
-            else {
-                return new Branch(data, counter - n, left, right);
-            }
-        }
-        else if(data.compareTo(elt) == -1) {
-            return new Branch(data, counter, left.remove(elt), right);
-        }
-        else {
-            return new Branch(data, counter, left, right.remove(elt));
+        int max = Math.max(0, this.multiplicity(elt)-n);
+        if(elt.compareTo(data) == 0) {
+            return new Branch(data, max, this.left, this.right);
+        } else if (elt.compareTo(data) < 0) {
+            return new Branch(data, this.counter, this.left.remove(elt, n), this.right);
+        } else {
+            return new Branch(data, this.counter, this.left, this.right.remove(elt, n));
         }
     }
     
@@ -125,7 +112,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
 
     public Multiset union(Multiset u) {
-        return left.union(right.union(u)).add(data, counter);
+        return left.union(right.union(u)).add(data, this.multiplicity(data));
     }
 
     public Multiset inter(Multiset u) {
@@ -136,10 +123,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
     
     public Multiset diff(Multiset u) {
-        if(u.member(data)) {
-            return left.union(right).diff(u.remove(data, counter));
-        }
-        return left.union(right).diff(u);
+        return left.union(right).diff(u.remove(data, this.multiplicity(data)));
     }
 
     public boolean equal(Multiset u) {
