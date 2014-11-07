@@ -9,7 +9,6 @@ package cmpu.pkg203.data2;
  *
  * @author michaelgoldman
  */
-import java.util.Arrays;
 import java.util.Random;
 
 public class Testers<D extends Comparable> {
@@ -21,6 +20,7 @@ public class Testers<D extends Comparable> {
             cardAddF2 = 0,
             cardRemoveF1 = 0,
             cardRemoveF2 = 0,
+            cardRemoveF3 = 0,
             memberAddF = 0,
             memberDiffF = 0,
             memberUnionF1 =0,
@@ -81,7 +81,10 @@ public class Testers<D extends Comparable> {
             Multiset bag = RMS(length);
             int bagCard = bag.cardinality();
             int newCard = bag.remove(elt).cardinality();
-            if(bag.multiplicity(elt) != 0 && (newCard != bagCard-1)) {
+            if(bag.multiplicity(elt) > 0 && (newCard != bagCard-1)) {
+                if(bag.multiplicity(elt)-1 != bag.remove(elt).multiplicity(elt)) {
+                    cardRemoveF3++;
+                }
                 cardRemoveF1++;
             }
             else if(bag.multiplicity(elt) == 0 && bagCard != newCard) {
@@ -227,6 +230,7 @@ public class Testers<D extends Comparable> {
         randomString.cardRemoveP();
         System.out.println("cardRemoveF1 triggered " + cardRemoveF1 + " times");
         System.out.println("cardRemoveF2 triggered " + cardRemoveF2 + " times");
+        System.out.println("cardRemoveF3 triggered " + cardRemoveF3 + " times");
         
         randomInt.memberDiffP();
         randomString.memberDiffP();
@@ -287,8 +291,8 @@ public class Testers<D extends Comparable> {
 //                + "in " + branch.sequence().toString() + " = " + branch.multiplicity(randomInt));        
 //        System.out.println(randomString());
 //        System.out.println();
-        Multiset branch = randomInt.RMS(20);
-        Multiset String = randomString.RMS(20);
+//        Multiset branch = randomInt.RMS(20);
+//        Multiset String = randomString.RMS(20);
         
 //        System.out.println("BST card");
 //        System.out.println(branch.cardinality());
