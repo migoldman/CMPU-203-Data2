@@ -83,7 +83,7 @@ public class Testers<D extends Comparable> {
             int newCard = bag.remove(elt).cardinality();
             if(bag.multiplicity(elt) > 0 && (newCard != bagCard-1)) {
                 if(bag.multiplicity(elt)-1 != bag.remove(elt).multiplicity(elt)) {
-                    System.out.println("cardRemoveF3: " + bag.sequence().toString() + " elt:" + elt + " now has: " + bag.remove(elt).multiplicity(elt));
+                    System.out.println("cardRemoveF3: " + bag.sequence().toString() + " elt:" + elt + " now " + bag.remove(elt).sequence().toString() + " has: " + bag.remove(elt).multiplicity(elt));
                     cardRemoveF3++;
                 }
                 cardRemoveF1++;
@@ -211,8 +211,9 @@ public class Testers<D extends Comparable> {
     public void cardSumItP() {
         for(int i = 0; i < 1000; i++) {
             int length = randomInt();
-            Multiset bag = RMS(length);
+            Multiset bag = RMS(5);
             if(bag.sumIt() != bag.cardinality()) {
+                System.out.println("bag: " + bag.sequence().toString() + " sumIt:" + bag.sumIt() + " card:" + bag.cardinality());
                 cardSumItF++;
             }
         }

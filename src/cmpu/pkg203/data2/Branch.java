@@ -17,23 +17,18 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     boolean isBlack;
     
     Branch(D data, int counter) {
-        this.data = data;
-        this.counter = counter;
-        this.left = new Leaf();
-        this.right = new Leaf();
-        this.isBlack = false;
+        this(data, counter, new Leaf(), new Leaf());
     }
     
     Branch(D data, int counter, Multiset left, Multiset right) {
-        this.data = data;
-        this.counter = counter;
-        this.left = left;
-        this.right = right;
-        this.isBlack = false;
+        this(data, counter, left, right, false);
     }
 
     Branch(D data, int counter, Multiset left, Multiset right, boolean isBlack) {
         this.data = data;
+        if ( counter <= 0 ) {
+            throw new RuntimeException("Cannot create branch of count 0: " + data);
+        }
         this.counter = counter;
         this.left = left;
         this.right = right;
@@ -85,12 +80,12 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         int max = Math.max(0, this.counter-n);
         if(elt.compareTo(data) == 0) {
             if(max == 0) {
-                return left.union(right);
+                return left.union(right).format();
             }
             else {
-                return new Branch(data, max, this.left, this.right).format();
+                return new Branch(data, max, this.left, this.right);
             }
-        } else if (elt.compareTo(data) < 0) {
+        } else if (data.compareTo(elt) < 0) {
             return new Branch(data, this.counter, this.left.remove(elt, n), this.right);
         } else {
             return new Branch(data, this.counter, this.left, this.right.remove(elt, n));
@@ -175,7 +170,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         if(elt.compareTo(this.data) == 0) {
             return new Branch(this.data, this.counter + n, this.left, this.right, this.isBlack);
         }
-        else if(elt.compareTo(this.data) < 0) {
+        else if(data.compareTo(elt) < 0) {
             return new Branch(this.data, this.counter, left.insert(elt, n), this.right, this.isBlack).format();
         }
         else {
@@ -206,11 +201,13 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             
             //////////////////
 
+            //OK
+            
             return new Branch(
                     L.data,
                     L.counter,
                     new Branch(LL.data, LL.counter, LL.left, LL.right, true),
-                    new Branch(this.data, this.counter, LL.right, this.right, true),
+                    new Branch(this.data, this.counter, L.right, this.right, true),
                     false);
         }   
         
@@ -230,13 +227,15 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             
             //////////////////
 
+            //OK
+            
             return new Branch(
                 //Data
                 LR.data, 
                 //Counter
                 LR.counter, 
                 //Left
-                new Branch(L.data, L.counter, LL, LR, true),
+                new Branch(L.data, L.counter, LL, LR.left, true),
                 //Right
                 new Branch(this.data, this.counter, LR.right, this.right, true),
                 //isBlack
@@ -258,13 +257,15 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             
             //////////////////
 
+            //OK
+            
             return new Branch(
                     //Data
                     RL.data,
                     //Counter
                     RL.counter,
                     //Left
-                    new Branch(this.data, this.counter, RL.left, this.right, true),
+                    new Branch(this.data, this.counter, this.left, RL.left, true),
                     //Right
                     new Branch(R.data, R.counter, RL.right, R.right, true),
                     false);
@@ -284,6 +285,8 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             RL = ((Branch) R.left);
             
             //////////////////
+            
+            //OK
             
             return new Branch(
                     R.data,

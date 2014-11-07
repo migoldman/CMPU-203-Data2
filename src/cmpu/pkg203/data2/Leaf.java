@@ -40,16 +40,20 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
 
     
     public Multiset add(D data) {
-        return new Branch(data, 1, new Leaf(), new Leaf());
+        return this.add(data, 1);
     }
     
     public Multiset add(D data, int n) {
-        return new Branch(data, n, new Leaf(), new Leaf());
+        if ( n <= 0 ) {
+            return this;
+        } else {
+            return new Branch(data, n, new Leaf(), new Leaf());
+        }
     }
 
     
     public Multiset remove(D data) {
-        return this;
+        return this.remove(data, 1);
     }
     
     public Multiset remove(D data, int n) {
@@ -76,7 +80,7 @@ public class Leaf<D extends Comparable> implements Multiset<D> {
 
     
     public boolean equal(Multiset u) {
-        return false;
+        return u.isEmpty();
     }
 
     

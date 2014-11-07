@@ -16,6 +16,9 @@ public class BranchSeq<D extends Comparable> implements Sequence {
     
     public BranchSeq(D here, int count, Sequence<D> next) {
         this.here = here;
+        if ( count <= 0 ) {
+            throw new RuntimeException("Should never create a BranchSeq of count 0: " + here);
+        }
         this.count = count;
         this.next = next;
     }
