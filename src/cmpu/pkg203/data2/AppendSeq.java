@@ -35,7 +35,7 @@ public class AppendSeq<D extends Comparable> implements Sequence {
             return new AppendSeq(this.left.next(), this.right);
         }
         else {
-            return this.right.next();
+            return new AppendSeq(this.left, this.right.next());
         }
     }
     

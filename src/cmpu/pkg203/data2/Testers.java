@@ -83,6 +83,7 @@ public class Testers<D extends Comparable> {
             int newCard = bag.remove(elt).cardinality();
             if(bag.multiplicity(elt) > 0 && (newCard != bagCard-1)) {
                 if(bag.multiplicity(elt)-1 != bag.remove(elt).multiplicity(elt)) {
+                    System.out.println("cardRemoveF3: " + bag.sequence().toString() + " elt:" + elt + " now has: " + bag.remove(elt).multiplicity(elt));
                     cardRemoveF3++;
                 }
                 cardRemoveF1++;

@@ -52,7 +52,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         if(data.compareTo(elt) == 0) {
             return counter;
         }
-        else if(data.compareTo(elt) == -1) {
+        else if(data.compareTo(elt) < 0) {
             return left.multiplicity(elt);
         }
         else {
@@ -62,26 +62,18 @@ public class Branch<D extends Comparable> implements Multiset<D> {
 
         
     public Multiset add(D elt) {
-        if(data.compareTo(elt) == 0) {
-            return new Branch(data, counter+1, left, right);
-        }
-        else if(data.compareTo(elt) == -1) {
-            return new Branch(data, counter, left.add(data), right);
-        }
-        else {
-            return new Branch(data, counter, left, right.add(elt));
-        }
+        return this.add(elt,1);
     }
     
     public Multiset add(D elt, int n) {
         if(data.compareTo(elt) == 0) {
-            return new Branch(data, counter + n, left, right);
+            return new Branch(data, counter + n, left, right, this.isBlack);
         }
-        else if(data.compareTo(elt) == -1) {
-            return new Branch(data, counter, this.left.add(elt, n), right).format();
+        else if(data.compareTo(elt) < 0) {
+            return new Branch(data, counter, this.left.add(elt, n), right, this.isBlack).format();
         }
         else {
-            return new Branch(data, counter, left, right.add(elt, n)).format();
+            return new Branch(data, counter, left, right.add(elt, n), this.isBlack).format();
         }
     }
 
@@ -92,7 +84,12 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     public Multiset remove(D elt, int n) {
         int max = Math.max(0, this.counter-n);
         if(elt.compareTo(data) == 0) {
-            return new Branch(data, max, this.left, this.right);
+            if(max == 0) {
+                return left.union(right);
+            }
+            else {
+                return new Branch(data, max, this.left, this.right).format();
+            }
         } else if (elt.compareTo(data) < 0) {
             return new Branch(data, this.counter, this.left.remove(elt, n), this.right);
         } else {
@@ -103,7 +100,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     public boolean member(D elt) {
         if (data.compareTo(elt) == 0) {
             return true;
-        } else if (data.compareTo(elt) == -1) {
+        } else if (data.compareTo(elt) < 0) {
             return left.member(elt);
         }
         else {
@@ -116,10 +113,19 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
 
     public Multiset inter(Multiset u) {
-        if (u.member(data)) {
-            return new Branch(data, counter, left.inter(u), right.inter(u));
-        } 
-        return left.inter(u).union(right.inter(u));
+        if(u.member(data)) {
+            if(u.multiplicity(data) > this.multiplicity(data)) {
+                return new Branch(this.data, this.multiplicity(data), 
+                        this.left.inter(u), this.right.inter(u));
+            }
+            else {
+                return new Branch(this.data, u.multiplicity(data), 
+                        this.left.inter(u), this.right.inter(u));
+            }
+        }
+        else {
+            return this.left.inter(u).union(this.right.inter(u));
+        }
     }
     
     public Multiset diff(Multiset u) {
@@ -131,11 +137,9 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
     
     public boolean subset(Multiset u) {
-        if(!u.member(data)) {
-            return false;
-        } else {
-            return left.union(right).subset(u);
-        }
+        return (u.multiplicity(data) >= this.multiplicity(data)) 
+                && this.left.subset(u) 
+                && this.right.subset(u);
     } 
     
     public Sequence<D> sequence() {
@@ -212,7 +216,8 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         
         
         //CASE 2
-        else if((this.isBlackHuh() && (this.left instanceof Branch)
+        else if((this.isBlackHuh() 
+                && (this.left instanceof Branch)
                 && (((Branch) this.left).left instanceof Branch)
                 && !((Branch) this.left).isBlackHuh()
                 && !((Branch) this.left).left.isBlackHuh())) {
