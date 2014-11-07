@@ -10,5 +10,11 @@ package cmpu.pkg203.data2;
  * @author michaelgoldman
  */
 public interface Randomness<D extends Comparable> {
+    
+    /*
+    INPUT: this
+    OUTPUT: D
+        @ Returns a random input of type D
+    */
     public D randomInput();
 }

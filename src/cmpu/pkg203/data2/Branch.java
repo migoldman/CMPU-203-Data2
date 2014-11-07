@@ -78,10 +78,10 @@ public class Branch<D extends Comparable> implements Multiset<D> {
             return new Branch(data, counter + n, left, right);
         }
         else if(data.compareTo(elt) == -1) {
-            return new Branch(data, counter, this.left.add(elt, n), right);
+            return new Branch(data, counter, this.left.add(elt, n), right).format();
         }
         else {
-            return new Branch(data, counter, left, right.add(elt, n));
+            return new Branch(data, counter, left, right.add(elt, n)).format();
         }
     }
 
@@ -90,7 +90,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
     }
     
     public Multiset remove(D elt, int n) {
-        int max = Math.max(0, this.multiplicity(elt)-n);
+        int max = Math.max(0, this.counter-n);
         if(elt.compareTo(data) == 0) {
             return new Branch(data, max, this.left, this.right);
         } else if (elt.compareTo(data) < 0) {
