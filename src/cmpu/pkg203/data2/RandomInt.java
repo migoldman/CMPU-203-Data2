@@ -15,6 +15,6 @@ public class RandomInt implements Randomness<Integer> {
     
     public Integer randomInput() {
         Random rand = new Random();
-        return rand.nextInt((50 - 0) + 1) + 0;
+        return rand.nextInt((50 - 1) + 1) + 1;
     }
 }

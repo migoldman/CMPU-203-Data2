@@ -21,7 +21,7 @@ public class RandomString implements Randomness<String> {
     }
     
     public String randomInput() {
-        StringBuffer randString = new StringBuffer();
+        StringBuilder randString = new StringBuilder();
         
         for(int i = 0; i < randomInt(); i++) {
             int randInt = randomInt();

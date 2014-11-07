@@ -145,7 +145,7 @@ public class Branch<D extends Comparable> implements Multiset<D> {
         return sumIts(this.sequence());
     }
     
-    public int sumIts(Sequence<D> temp) {
+    private int sumIts(Sequence<D> temp) {
         int sum = 0;
         while(temp.hasNext()) {
             sum = sum+1;
