@@ -48,7 +48,7 @@ public class Testers<D extends Comparable> {
     
     //Creates a random int from min to max
     public static int randomInt() {
-        return randNum.nextInt((50 - 0) + 1) + 0;
+        return randNum.nextInt((50 - 1) + 1) + 1;
     }
     
     public Multiset<D> RMS(int n) {
@@ -117,6 +117,9 @@ public class Testers<D extends Comparable> {
             if(bagA.diff(bagB).member(elt) && !bagB.member(elt)) {
                 memberDiffF++;
             }
+            if(bagA.diff(bagB).multiplicity(elt) > bagB.multiplicity(elt)) {
+                memberDiffF++;
+            }
         }
     }
     //5
@@ -159,7 +162,7 @@ public class Testers<D extends Comparable> {
             int length = randomInt();
             Multiset bag = RMS(length);
             if(randomInt() > 25) {
-                if(bag.isBlackHuh()) {
+                if(bag.isEmpty()) {
                     isEmptyF1++;
                 }
             }
@@ -197,6 +200,7 @@ public class Testers<D extends Comparable> {
         }
     }
     //10
+        //I did it for 3 so it would have a high chance of actually having a subset and equal
     public void subsetEqualP() {
         for(int i = 0; i < 1000; i++) {
             D elt = rand.randomInput();
@@ -211,7 +215,7 @@ public class Testers<D extends Comparable> {
     public void cardSumItP() {
         for(int i = 0; i < 1000; i++) {
             int length = randomInt();
-            Multiset bag = RMS(5);
+            Multiset bag = RMS(length);
             if(bag.sumIt() != bag.cardinality()) {
                 System.out.println("bag: " + bag.sequence().toString() + " sumIt:" + bag.sumIt() + " card:" + bag.cardinality());
                 cardSumItF++;
@@ -293,13 +297,13 @@ public class Testers<D extends Comparable> {
 //                + "in " + branch.sequence().toString() + " = " + branch.multiplicity(randomInt));        
 //        System.out.println(randomString());
 //        System.out.println();
-//        Multiset branch = randomInt.RMS(20);
+        Multiset branch = randomInt.RMS(20);
 //        Multiset String = randomString.RMS(20);
         
 //        System.out.println("BST card");
 //        System.out.println(branch.cardinality());
 //        System.out.println("Seq toString");
-//        System.out.println(branch.sequence().toString());
+        System.out.println(branch.sequence().toString());
 //        System.out.println("Seq size");
 //        System.out.println(branch.sumIt());
 //        System.out.println(String.sequence().toString());
